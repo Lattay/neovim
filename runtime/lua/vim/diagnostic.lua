@@ -278,9 +278,11 @@ local function set_diagnostic_cache(namespace, bufnr, diagnostics)
     diagnostic.end_lnum = diagnostic.end_lnum or diagnostic.lnum
     diagnostic.end_col = diagnostic.end_col or diagnostic.col
     diagnostic.namespace = namespace
-    diagnostic.bufnr = bufnr
+
+    b = diagnostic.bufnr or bufnr
+    diagnostic_cache[b][namespace] = diagnostic_cache[b][namespace] or {}
+    table.insert(diagnostic_cache[b][namespace], diagnostic)
   end
-  diagnostic_cache[bufnr][namespace] = diagnostics
 end
 
 local function restore_extmarks(bufnr, last)
