@@ -874,6 +874,12 @@ function LanguageTree:_get_injections()
   return result
 end
 
+--- Return a list of all the languages injected in the tree
+--- @return string[]
+function LanguageTree:injected_languages()
+  return vim.tbl_keys(self:_get_injections())
+end
+
 ---@private
 ---@param cb_name TSCallbackName
 function LanguageTree:_do_callback(cb_name, ...)

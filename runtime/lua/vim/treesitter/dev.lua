@@ -432,6 +432,21 @@ function M.inspect_tree(opts)
       end
     end,
   })
+  api.nvim_buf_set_keymap(b, 'n', 'O', '', {
+    desc = 'Toggle query editor',
+    callback = function()
+      local edit_w = vim.b[buf].dev_edit
+      if not edit_w or not close_win(edit_w) then
+        local languages = vim.treesitter.get_parser(buf, opts.lang):injected_languages()
+        table.insert(languages, opts.lang or vim.treesitter.language.get_lang(api.nvim_get_option_value("filetype", {})))
+        vim.ui.select(languages, {}, function(choice)
+            if choice then
+              M.edit_query(choice)
+            end
+        end)
+      end
+    end,
+  })
 
   local group = api.nvim_create_augroup('treesitter/dev', {})
 
